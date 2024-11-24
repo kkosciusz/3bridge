@@ -1,6 +1,7 @@
 """Operations on Hands and Cards."""
 
 from enum import Enum
+from dataclasses import dataclass
 
 
 class Suit(Enum):
@@ -10,9 +11,10 @@ class Suit(Enum):
     CLUB = 4
 
 
+@dataclass(eq=True, frozen=True, slots=True)
 class Card:
-    def __init__(self, suit: Suit, rank: str):
-        pass
+    suit: Suit
+    rank: str
 
 
 class Hand:

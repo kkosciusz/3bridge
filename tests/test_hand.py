@@ -21,3 +21,15 @@ def test_adding_a_card_to_a_hand_twice_throws():
     hand.add(card)
     with pytest.raises(ValueError):
         hand.add(card)
+
+
+def test_comparing_cards_for_equality_is_supported():
+    card1 = Card(Suit.SPADE, 'A')
+    card2 = Card(Suit.HEART, 'A')
+    card3 = Card(Suit.HEART, 'K')
+    card4 = Card(Suit.SPADE, 'A')
+
+    assert card1 == card4
+    assert card1 != card2
+    assert card2 != card3
+    assert card3 != card4
