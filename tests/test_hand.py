@@ -33,3 +33,13 @@ def test_comparing_cards_for_equality_is_supported():
     assert card1 != card2
     assert card2 != card3
     assert card3 != card4
+
+
+def test_can_parse_card_from_text():
+    card = Card.from_text('SA')
+    assert card == Card(Suit.SPADE, 'A')
+
+
+def test_can_output_card_as_text():
+    card = Card(Suit.SPADE, 'A')
+    assert card.as_text() == 'SA'
