@@ -13,7 +13,7 @@ class Suit(Enum):
     CLUB = 4
 
 
-@dataclass(eq=True, frozen=True, slots=True)
+@dataclass(eq=True, frozen=True)
 class Card:
     suit: Suit
     rank: str
