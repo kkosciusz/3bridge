@@ -1,10 +1,17 @@
 """Operations on Hands and Cards."""
 
 
+class Card:
+    pass
+
+
 class Hand:
     """Represent a set of cards for one player."""
     def __init__(self):
-        pass
+        self._cards = 0
 
     def __len__(self):
-        return 0
+        return self._cards
+
+    def add(self, card: Card):
+        self._cards += 1
