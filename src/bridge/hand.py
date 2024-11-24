@@ -29,4 +29,6 @@ class Hand:
         return iter(self._cards)
 
     def add(self, card: Card):
+        if card in self._cards:
+            raise ValueError
         self._cards.add(card)

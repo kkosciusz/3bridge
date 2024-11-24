@@ -1,3 +1,5 @@
+import pytest
+
 from bridge.hand import Card, Hand, Suit
 
 
@@ -6,9 +8,16 @@ def test_empty_hand_has_len_0():
     assert len(hand) == 0
 
 
-def test_can_add_card_to_hand():
+def test_after_adding_card_to_empty_hand_card_is_in_hand():
     hand = Hand()
-    ace_of_spades = Card(Suit.SPADE, 'A')
-    hand.add(ace_of_spades)
-    assert len(hand) == 1
-    assert ace_of_spades in hand
+    card = Card(Suit.SPADE, 'A')
+    hand.add(card)
+    assert card in hand
+
+
+def test_adding_a_card_to_a_hand_twice_throws():
+    hand = Hand()
+    card = Card(Suit.SPADE, 'A')
+    hand.add(card)
+    with pytest.raises(ValueError):
+        hand.add(card)
