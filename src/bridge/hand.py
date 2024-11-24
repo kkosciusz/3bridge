@@ -1,7 +1,9 @@
 """Operations on Hands and Cards."""
 
-from enum import Enum
+from __future__ import annotations
+
 from dataclasses import dataclass
+from enum import Enum
 
 
 class Suit(Enum):
@@ -51,5 +53,5 @@ class Hand:
 
     def add(self, card: Card):
         if card in self._cards:
-            raise ValueError
+            raise ValueError("card already in hand")
         self._cards.add(card)

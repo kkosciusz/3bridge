@@ -1,5 +1,4 @@
 import pytest
-
 from bridge.hand import Card, Hand, Suit
 
 
@@ -19,7 +18,7 @@ def test_adding_a_card_to_a_hand_twice_throws():
     hand = Hand()
     card = Card(Suit.SPADE, 'A')
     hand.add(card)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="card already in hand"):
         hand.add(card)
 
 
