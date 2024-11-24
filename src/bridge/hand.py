@@ -24,7 +24,7 @@ class Card:
             'D': Suit.DIAMOND,
             'C': Suit.CLUB,
         }
-        return cls(suits[text[0]], text[1])
+        return cls(suits[text[0]], text[1:])
 
     def as_text(self):
         suits = {

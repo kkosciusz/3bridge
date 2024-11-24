@@ -35,11 +35,9 @@ def test_comparing_cards_for_equality_is_supported():
     assert card3 != card4
 
 
-def test_can_parse_card_from_text():
-    card = Card.from_text('SA')
-    assert card == Card(Suit.SPADE, 'A')
-
-
-def test_can_output_card_as_text():
-    card = Card(Suit.SPADE, 'A')
-    assert card.as_text() == 'SA'
+@pytest.mark.parametrize("rank_text", "A K Q J 10 9 8 7 6 5 4 3 2".split())
+@pytest.mark.parametrize("suit_text", "S H D C".split())
+def test_text_to_card_and_back_gives_same_text(suit_text, rank_text):
+    card_text = suit_text + rank_text
+    card = Card.from_text(card_text)
+    assert card.as_text() == card_text
