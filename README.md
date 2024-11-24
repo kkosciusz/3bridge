@@ -1,3 +1,5 @@
+![CI status](https://github.com/kkosciusz/3bridge/actions/workflows/CI.yaml/badge.svg?event=push)
+
 # About 3::Bridge
 
 This is a project 4 frieds set up to have fun and improve their gameplay.

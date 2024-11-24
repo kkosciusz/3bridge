@@ -21,5 +21,12 @@ path = "src/bridge/__about__.py"
 [tool.hatch.build.targets.wheel]
 packages = ["src/bridge"]
 
-[[tool.hatch.envs.hatch-test.matrix]]
-python = ["3.13", "3.9"]
+[tool.hatch.envs.test]
+dependencies = ["coverage[toml]", "pytest", "pytest-cov", "pytest-mock"]
+
+[tool.hatch.envs.test.scripts]
+test-coverage = "pytest --cov-config=pyproject.toml --cov=pkg --cov=tests"
+test = "test-coverage --no-cov"
+
+[[tool.hatch.envs.test.matrix]]
+python = ["3.9", "3.10", "3.11", "3.12", "3.13"]
