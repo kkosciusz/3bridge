@@ -12,6 +12,9 @@ class Suit(Enum):
     DIAMOND = 3
     CLUB = 4
 
+    def __repr__(self):
+        return f'<{self.__class__.__name__}.{self._name_}>'
+
 
 @dataclass(eq=True, frozen=True)
 class Card:
