@@ -1,5 +1,5 @@
 import pytest
-from bridge.hand import Card, Hand, Suit, Rank
+from bridge.hand import Card, Hand, Rank, Suit
 
 
 def test_empty_hand_has_len_0():

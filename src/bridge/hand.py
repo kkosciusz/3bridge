@@ -7,13 +7,29 @@ from enum import Enum
 
 
 class Suit(Enum):
-    SPADE = 1
+    CLUB = 0
+    DIAMOND = 1
     HEART = 2
-    DIAMOND = 3
-    CLUB = 4
+    SPADE = 3
 
     def __repr__(self):
         return f'<{self.__class__.__name__}.{self._name_}>'
+
+    def __lt__(self, other):
+        if self.__class__ == other.__class__:
+            return self.value < other.value
+        raise NotImplementedError
+
+    @classmethod
+    def __strings(cls):
+        return ('C', 'D', 'H', 'S')
+
+    def as_text(self) -> str:
+        return Suit.__strings()[self.value]
+
+    @classmethod
+    def from_text(cls, text: str) -> Suit:
+        return cls(cls.__strings().index(text))
 
 
 class Rank(Enum):
@@ -32,26 +48,20 @@ class Rank(Enum):
     ACE = 12
 
     @classmethod
-    def _missing_(cls, value):
-        if isinstance(value, str):
-            return cls._values().index(str)
-        return super()._missing_(value)
-
-    @classmethod
-    def _values(cls):
+    def __strings(cls):
         return ('2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A')
 
-    def __lt__(self, other):
+    def __lt__(self, other: Rank):
         if self.__class__ == other.__class__:
             return self.value < other.value
         raise NotImplementedError
 
-    def to_text(self):
-        return Rank._values()[self.value]
+    def as_text(self) -> str:
+        return Rank.__strings()[self.value]
 
     @classmethod
     def from_text(cls, text: str) -> Rank:
-        return cls(cls._values().index(text))
+        return cls(cls.__strings().index(text))
 
 
 @dataclass(eq=True, frozen=True)
@@ -60,25 +70,13 @@ class Card:
     rank: Rank
 
     @classmethod
-    def from_text(cls, text):
-        suits = {
-            'S': Suit.SPADE,
-            'H': Suit.HEART,
-            'D': Suit.DIAMOND,
-            'C': Suit.CLUB,
-        }
-        return cls(suits[text[0]], Rank.from_text(text[1:]))
+    def from_text(cls, text: str):
+        return cls(Suit.from_text(text[0]), Rank.from_text(text[1:]))
 
-    def as_text(self):
-        suits = {
-            Suit.SPADE: 'S',
-            Suit.HEART: 'H',
-            Suit.DIAMOND: 'D',
-            Suit.CLUB: 'C',
-        }
-        return suits[self.suit] + self.rank.to_text()
+    def as_text(self) -> str:
+        return self.suit.as_text() + self.rank.as_text()
 
-    def hcl(self):
+    def hcl(self) -> int:
         hcls = {
             Rank.ACE: 4,
             Rank.KING: 3,
@@ -102,34 +100,22 @@ class Hand:
     def __iter__(self):
         return iter(self._cards)
 
-    def add(self, card: Card):
+    def add(self, card: Card) -> None:
         if card in self._cards:
             msg = f'{card!r} already in hand'
             raise ValueError(msg)
         self._cards.add(card)
 
-    def hcl(self):
+    def hcl(self) -> int:
         return sum(card.hcl() for card in self._cards)
 
-    def as_text(self):
-        spades, hearts, clubs, diamonds = [], [], [], []
+    def as_text(self) -> str:
+        suits = sorted(Suit, reverse=True)
+        suit_ranks = {suit: [] for suit in suits}
         for card in self._cards:
-            if card.suit == Suit.SPADE:
-                spades += [card]
-            if card.suit == Suit.HEART:
-                hearts += [card]
-            if card.suit == Suit.DIAMOND:
-                diamonds += [card]
-            if card.suit == Suit.CLUB:
-                clubs += [card]
+            suit_ranks[card.suit].append(card.rank)
 
-        def stringize(cards):
-            ranks = sorted([card.rank for card in cards], reverse=True)
-            return "".join(map(Rank.to_text, ranks))
+        def stringize(ranks):
+            return "".join(map(Rank.as_text, sorted(ranks, reverse=True)))
 
-        spades_str = stringize(spades)
-        hearts_str = stringize(hearts)
-        diamonds_str = stringize(diamonds)
-        clubs_str = stringize(clubs)
-
-        return f'{spades_str}.{hearts_str}.{diamonds_str}.{clubs_str}'
+        return ".".join(stringize(suit_ranks[suit]) for suit in suits)
