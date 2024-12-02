@@ -40,6 +40,15 @@ class Card:
         }
         return suits[self.suit] + self.rank
 
+    def hcl(self):
+        hcls = {
+            'A': 4,
+            'K': 3,
+            'Q': 2,
+            'J': 1,
+        }
+        return hcls.get(self.rank, 0)
+
 
 class Hand:
     """Represent a set of cards for one player."""

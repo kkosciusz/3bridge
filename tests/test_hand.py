@@ -34,6 +34,16 @@ def test_comparing_cards_for_equality_is_supported():
     assert card3 != card4
 
 
+def test_given_a_card_can_compute_hcl_value():
+    ace = Card(Suit.HEART, 'A')
+    king = Card(Suit.SPADE, 'K')
+    queen = Card(Suit.DIAMOND, 'Q')
+    jack = Card(Suit.CLUB, 'J')
+    ten = Card(Suit.CLUB, '10')
+    cards = (ace, king, queen, jack, ten)
+    assert [card.hcl() for card in cards] == [4, 3, 2, 1, 0]
+
+
 @pytest.mark.parametrize("rank_text", "A K Q J 10 9 8 7 6 5 4 3 2".split())
 @pytest.mark.parametrize("suit_text", "S H D C".split())
 def test_text_to_card_and_back_gives_same_text(suit_text, rank_text):
