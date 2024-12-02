@@ -1,32 +1,55 @@
 [project]
 name = "3bridge"
 authors = [
-    { name = "Krzysztof Kościuszkiewicz", email = "k.kosciuszkiewicz@gmail.com" },
+    { name = "Krzysztof Kościuszkiewicz", email = "k.kosciuszkiewicz@gmail.com" }
 ]
 readme = "README.md"
 license = { file = "LICENSE.txt" }
-classifiers = ["License :: OSI Approved :: MIT License"]
-dynamic = ["version", "description"]
+classifiers = [
+    "License :: OSI Approved :: MIT License"
+]
+dynamic = [
+    "version",
+    "description"
+]
 
 [project.urls]
 Home = "https://github.com/kkosciusz/3bridge"
 
 [build-system]
-requires = ["hatchling"]
+requires = [
+    "hatchling"
+]
 build-backend = "hatchling.build"
 
 [tool.hatch.version]
 path = "src/bridge/__about__.py"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/bridge"]
+packages = [
+    "src/bridge"
+]
 
 [tool.hatch.envs.test]
-dependencies = ["coverage[toml]", "pytest", "pytest-cov", "pytest-mock"]
+dependencies = [
+    "coverage[toml]",
+    "pytest",
+    "pytest-cov",
+    "pytest-mock"
+]
 
 [tool.hatch.envs.test.scripts]
 test-coverage = "pytest --cov-config=pyproject.toml --cov=pkg --cov=tests"
-test = "test-coverage --no-cov"
+test          = "test-coverage --no-cov"
 
 [[tool.hatch.envs.test.matrix]]
-python = ["3.9", "3.10", "3.11", "3.12", "3.13"]
+python = [
+    "3.9",
+    "3.10",
+    "3.11",
+    "3.12",
+    "3.13"
+]
+
+[tool.ruff.format]
+quote-style = "preserve"

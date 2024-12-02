@@ -33,16 +33,17 @@ class Card:
 
     def as_text(self):
         suits = {
-           Suit.SPADE: 'S',
-           Suit.HEART: 'H',
-           Suit.DIAMOND: 'D',
-           Suit.CLUB: 'C',
+            Suit.SPADE: 'S',
+            Suit.HEART: 'H',
+            Suit.DIAMOND: 'D',
+            Suit.CLUB: 'C',
         }
         return suits[self.suit] + self.rank
 
 
 class Hand:
     """Represent a set of cards for one player."""
+
     _cards: set[Card]
 
     def __init__(self):
