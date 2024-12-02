@@ -57,5 +57,6 @@ class Hand:
 
     def add(self, card: Card):
         if card in self._cards:
-            raise ValueError("card already in hand")
+            msg = f'{card!r} already in hand'
+            raise ValueError(msg)
         self._cards.add(card)

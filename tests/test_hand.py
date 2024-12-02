@@ -18,7 +18,7 @@ def test_adding_a_card_to_a_hand_twice_throws():
     hand = Hand()
     card = Card(Suit.SPADE, 'A')
     hand.add(card)
-    with pytest.raises(ValueError, match="card already in hand"):
+    with pytest.raises(ValueError, match=r".* already in hand"):
         hand.add(card)
 
 
