@@ -81,6 +81,12 @@ def test_card_ranks_are_properly_ordered():
     assert ordered == sorted(unordered)
 
 
+def test_card_suits_are_properly_ordered():
+    unordered = [Suit.HEART, Suit.CLUB, Suit.SPADE, Suit.DIAMOND]
+    ordered = [Suit.CLUB, Suit.DIAMOND, Suit.HEART, Suit.SPADE]
+    assert ordered == sorted(unordered)
+
+
 @pytest.mark.parametrize("rank_text", "A K Q J 10 9 8 7 6 5 4 3 2".split())
 @pytest.mark.parametrize("suit_text", "S H D C".split())
 def test_text_to_card_and_back_gives_same_text(suit_text, rank_text):
