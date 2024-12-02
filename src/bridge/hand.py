@@ -55,8 +55,8 @@ class Hand:
 
     _cards: set[Card]
 
-    def __init__(self):
-        self._cards = set()
+    def __init__(self, cards=None):
+        self._cards = set(cards) if cards is not None else set()
 
     def __len__(self):
         return len(self._cards)
@@ -69,3 +69,6 @@ class Hand:
             msg = f'{card!r} already in hand'
             raise ValueError(msg)
         self._cards.add(card)
+
+    def hcl(self):
+        return sum(card.hcl() for card in self._cards)
