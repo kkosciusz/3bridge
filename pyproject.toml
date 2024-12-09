@@ -51,5 +51,8 @@ python = [
     "3.13"
 ]
 
+[tool.ruff]
+line-length = 85
+
 [tool.ruff.format]
 quote-style = "preserve"

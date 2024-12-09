@@ -76,8 +76,24 @@ def test_can_output_hand_as_string(cards, expected):
 
 
 def test_card_ranks_are_properly_ordered():
-    unordered = [Rank.QUEEN, Rank.TWO, Rank.KING, Rank.SIX, Rank.JACK, Rank.ACE, Rank.TEN]
-    ordered = [Rank.TWO, Rank.SIX, Rank.TEN, Rank.JACK, Rank.QUEEN, Rank.KING, Rank.ACE]
+    unordered = [
+        Rank.QUEEN,
+        Rank.TWO,
+        Rank.KING,
+        Rank.SIX,
+        Rank.JACK,
+        Rank.ACE,
+        Rank.TEN,
+    ]
+    ordered = [
+        Rank.TWO,
+        Rank.SIX,
+        Rank.TEN,
+        Rank.JACK,
+        Rank.QUEEN,
+        Rank.KING,
+        Rank.ACE,
+    ]
     assert ordered == sorted(unordered)
 
 
