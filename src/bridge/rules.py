@@ -1,27 +1,27 @@
-from typing import Optional
-from bridge.bid import Bid, Trump
+from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from bridge.bid import Bid
+    from bridge.conditions import Condition
 
 
-class Rules:
-    def get_opening(self):
-        return [Rule()]
-
-
+@dataclass
 class Rule:
-    def __init__(self):
-        self.bid = Bid(Trump.CLUB, 1)
+    bid: Bid
+    require: list[Condition] = field(default_factory=list)
+    exclude: list[Condition] = field(default_factory=list)
 
     def describe(self):
-        return RuleDescription(hcp_min=12, hcp_max=17, num_clubs_min=5)
-
-
-@dataclass(frozen=True)
-class RuleDescription:
-    hcp_min: int
-    hcp_max: Optional[int] = None
-    num_clubs_min: Optional[int] = None
-
-
-default_system = Rules()
+        result = self.bid.as_text()
+        require_text = ", ".join(c.describe() for c in self.require)
+        exclude_text = ", ".join(c.describe() for c in self.exclude)
+        if require_text or exclude_text:
+            result += ":"
+        if require_text:
+            result += f" {require_text}"
+        if exclude_text:
+            result += f" wyklucza {exclude_text}"
+        return result

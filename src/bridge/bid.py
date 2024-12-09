@@ -13,8 +13,18 @@ class Trump(Enum):
     SPADE = 3
     NOTRUMP = 4
 
+    @classmethod
+    def __strings(cls):
+        return ('C', 'D', 'H', 'S', 'NT')
+
+    def as_text(self) -> str:
+        return Trump.__strings()[self.value]
+
 
 @dataclass(eq=True, frozen=True)
 class Bid:
     trump: Trump
     count: int
+
+    def as_text(self) -> str:
+        return f"{self.count}{self.trump.as_text()}"
