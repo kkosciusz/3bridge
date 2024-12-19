@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from enum import Enum
 
@@ -119,3 +120,26 @@ class Hand:
             return "".join(map(Rank.as_text, sorted(ranks, reverse=True)))
 
         return ".".join(stringize(suit_ranks[suit]) for suit in suits)
+
+    @classmethod
+    def from_text(cls: type[Hand], text: str) -> Hand:
+        """Create a Hand from text representation."""
+        suits = [Suit.SPADE, Suit.HEART, Suit.DIAMOND, Suit.CLUB]
+        rank_re = re.compile(r"[AKQJ98765432]|10")
+        rank_texts = [rank_re.findall(cards) for cards in text.split('.')]
+
+        if len(rank_texts) != len(suits):
+            msg = f"expecting exactly {len(suits)} suits"
+            raise ValueError(msg)
+
+        rebuilt = ".".join("".join(list(rank_text)) for rank_text in rank_texts)
+        if rebuilt != text:
+            msg = "unknown card rank"
+            raise ValueError(msg)
+
+        hand = cls()
+        for suit, ranks in zip(suits, rank_texts):
+            for rank in ranks:
+                card = Card(suit, Rank.from_text(rank))
+                hand.add(card)
+        return hand

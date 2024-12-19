@@ -109,3 +109,76 @@ def test_text_to_card_and_back_gives_same_text(suit_text, rank_text):
     card_text = suit_text + rank_text
     card = Card.from_text(card_text)
     assert card.as_text() == card_text
+
+
+@pytest.mark.parametrize(
+    "hand_text",
+    [
+        "...",
+        "A...",
+        ".A..",
+        "..A.",
+        "...A",
+        "A.K..",
+        "K.A..",
+        "..A.K",
+        "..K.A",
+        "AK.QJ.109.876",
+        "A108.A108.A108.A108",
+    ],
+)
+def test_hand_text_to_hand_and_back_gives_same_text(hand_text):
+    hand = Hand.from_text(hand_text)
+    assert hand.as_text() == hand_text
+
+
+def test_parsing_hand_from_text_hand_1():
+    hand_text = "AKQ.J10.98765.AKQ"
+    hand = Hand.from_text(hand_text)
+    card_texts = "SA SK SQ HJ H10 D9 D8 D7 D6 D5 CA CK CQ".split()
+    expected_cards = [Card.from_text(c) for c in card_texts]
+    assert len(hand) == len(expected_cards)
+    assert all(card in expected_cards for card in hand)
+
+
+@pytest.mark.parametrize(
+    "hand_text",
+    [
+        "AA...",
+        ".AA..",
+        "..AA.",
+        "...AA",
+    ],
+)
+def test_creating_hand_from_text_with_duplicate_cards_of_one_suit_throw(hand_text):
+    with pytest.raises(ValueError, match=r".* already in hand"):
+        Hand.from_text(hand_text)
+
+
+@pytest.mark.parametrize(
+    "hand_text",
+    [
+        "z...",
+        "11...",
+        "T...",
+        "121...",
+    ],
+)
+def test_creating_hand_from_text_with_invalid_card_ranks_throw(hand_text):
+    with pytest.raises(ValueError, match=r"unknown card rank"):
+        Hand.from_text(hand_text)
+
+
+@pytest.mark.parametrize(
+    "hand_text",
+    [
+        "",
+        ".",
+        "..",
+        "....",
+        "A.A.A.A.A",
+    ],
+)
+def test_creating_hand_form_text_with_invalid_number_of_suits_throw(hand_text):
+    with pytest.raises(ValueError, match=r"expecting exactly 4 suits"):
+        Hand.from_text(hand_text)
