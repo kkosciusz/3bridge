@@ -2,7 +2,7 @@ import pytest
 from bridge.hand import Card, Hand, Rank, Suit
 
 
-def test_empty_hand_has_len_0():
+def test_length_of_empty_hand_is_0():
     hand = Hand()
     assert len(hand) == 0
 
@@ -14,7 +14,7 @@ def test_after_adding_card_to_empty_hand_card_is_in_hand():
     assert card in hand
 
 
-def test_adding_a_card_to_a_hand_twice_throws():
+def test_adding_same_card_to_an_empty_hand_twice_throws():
     hand = Hand()
     card = Card(Suit.SPADE, Rank.ACE)
     hand.add(card)
@@ -34,7 +34,7 @@ def test_comparing_cards_for_equality_is_supported():
     assert card3 != card4
 
 
-def test_given_a_card_can_compute_hcl_value():
+def test_given_a_card_can_compute_correct_hcp_value():
     ace = Card(Suit.HEART, Rank.ACE)
     king = Card(Suit.SPADE, Rank.KING)
     queen = Card(Suit.DIAMOND, Rank.QUEEN)
@@ -44,7 +44,7 @@ def test_given_a_card_can_compute_hcl_value():
     assert [card.hcl() for card in cards] == [4, 3, 2, 1, 0]
 
 
-def test_given_a_hand_can_compute_hcl_value():
+def test_given_a_hand_can_compute_correct_hcp_value():
     ace = Card(Suit.HEART, Rank.ACE)
     king = Card(Suit.SPADE, Rank.KING)
     queen = Card(Suit.DIAMOND, Rank.QUEEN)
@@ -70,7 +70,7 @@ def test_given_a_hand_can_compute_hcl_value():
         (['CK', 'CA', 'CJ', 'CQ'], '...AKQJ'),
     ],
 )
-def test_can_output_hand_as_string(cards, expected):
+def test_given_hand_can_output_it_as_text(cards, expected):
     hand = Hand({Card.from_text(t) for t in cards})
     assert hand.as_text() == expected
 
@@ -105,7 +105,7 @@ def test_card_suits_are_properly_ordered():
 
 @pytest.mark.parametrize("rank_text", "A K Q J 10 9 8 7 6 5 4 3 2".split())
 @pytest.mark.parametrize("suit_text", "S H D C".split())
-def test_text_to_card_and_back_gives_same_text(suit_text, rank_text):
+def test_card_text_to_card_and_back_gives_same_text(suit_text, rank_text):
     card_text = suit_text + rank_text
     card = Card.from_text(card_text)
     assert card.as_text() == card_text
@@ -132,7 +132,7 @@ def test_hand_text_to_hand_and_back_gives_same_text(hand_text):
     assert hand.as_text() == hand_text
 
 
-def test_parsing_hand_from_text_hand_1():
+def test_hand_created_from_text_has_only_expected_cards():
     hand_text = "AKQ.J10.98765.AKQ"
     hand = Hand.from_text(hand_text)
     card_texts = "SA SK SQ HJ H10 D9 D8 D7 D6 D5 CA CK CQ".split()
