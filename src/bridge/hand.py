@@ -143,3 +143,6 @@ class Hand:
                 card = Card(suit, Rank.from_text(rank))
                 hand.add(card)
         return hand
+
+
+ALL_CARDS = tuple(Card(suit, rank) for rank in Rank for suit in Suit)

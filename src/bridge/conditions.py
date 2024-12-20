@@ -53,7 +53,13 @@ class Condition:
     suit: Suit | None = None
 
     def evaluate(self, hand: Hand) -> bool:
-        return hand.hcl() == self.value_min
+        cond = True
+        points = hand.hcl()
+        if self.value_max is not None:
+            cond = cond and points <= self.value_max
+        if self.value_min is not None:
+            cond = cond and points >= self.value_min
+        return cond
 
     def describe(self) -> str:
         if self.variable == Variable.PC:

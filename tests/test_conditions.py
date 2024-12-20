@@ -1,5 +1,11 @@
+from __future__ import annotations
+
+from typing import Callable, Iterable
+
+import hypothesis.strategies as st
 import pytest
 from bridge.conditions import (
+    Condition,
     cards,
     cards_max,
     cards_min,
@@ -9,7 +15,8 @@ from bridge.conditions import (
     pc_min,
     pc_range,
 )
-from bridge.hand import Hand, Suit
+from bridge.hand import ALL_CARDS, Card, Hand, Suit
+from hypothesis import given
 
 
 @pytest.mark.parametrize("number", range(1, 24, 2))
@@ -98,30 +105,22 @@ def test_description_of_min_max_suit_card_count(suit, text, start, add):
     assert condition.describe() == f"od {start} do {start+add} {text}"
 
 
-@pytest.mark.parametrize("hand_text", ["AKQJ...", "A.A.Q.", "K.K.K.J", "Q.Q.Q.A"])
-def test_pc_10_condition_evaluates_true_only_for_hands_with_10_hpc(
-    hand_text,
-):
-    condition = pc(10)
-    hand = Hand.from_text(hand_text)
-    assert condition.evaluate(hand) is True
+def verify_pc_condition(
+    hand: Hand, condition: Condition, expect: Callable[[int], bool]
+) -> None:
+    points = hand.hcl()
+    expected = expect(points)
+    assert condition.evaluate(hand) is expected
 
 
-@pytest.mark.parametrize(
-    "hand_text", ["...", "AKQ10...", "A.K.Q.", "Q.K.K.J", "J.J.J.A"]
-)
-def test_pc_10_condition_evaluates_false_for_hand_with_lower_hpc(hand_text):
-    condition = pc(10)
-    hand = Hand.from_text(hand_text)
-    assert condition.evaluate(hand) is False
+@st.composite
+def n_card_hand(draw, n: int, cards: Iterable[Card] = ALL_CARDS) -> Hand:
+    return draw(st.permutations(cards).map(lambda x: list(x)[:n]).map(Hand))
 
 
-@pytest.mark.parametrize(
-    "hand_text", ["AKQJ..AKQJ.", "A.K.QJ.QJ", "AQ.AK.K.J", "QJ.J.AKJ.A"]
-)
-def test_pc_10_condition_evaluates_false_for_hand_with_higher_hpc(
-    hand_text,
-):
-    condition = pc(10)
-    hand = Hand.from_text(hand_text)
-    assert condition.evaluate(hand) is False
+@given(hand=n_card_hand(13))
+def test_pc_conditions_evaluate_true_only_for_hands_with_correct_points(hand):
+    verify_pc_condition(hand, pc(10), lambda pc: pc == 10)
+    verify_pc_condition(hand, pc_max(10), lambda pc: pc <= 10)
+    verify_pc_condition(hand, pc_min(10), lambda pc: pc >= 10)
+    verify_pc_condition(hand, pc_range(8, 12), lambda pc: 8 <= pc <= 12)

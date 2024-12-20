@@ -32,6 +32,8 @@ packages = [
 
 [tool.hatch.envs.test]
 dependencies = [
+    "hypothesis",
+    "watchdog[watchmedo]",
     "coverage[toml]",
     "pytest",
     "pytest-cov",
@@ -41,6 +43,7 @@ dependencies = [
 [tool.hatch.envs.test.scripts]
 test-coverage = "pytest --cov-config=pyproject.toml --cov=pkg --cov=tests"
 test          = "test-coverage --no-cov"
+autotest      = "watchmedo shell-command --patterns=*.py -R -D -W -q --command=pytest"
 
 [[tool.hatch.envs.test.matrix]]
 python = [
