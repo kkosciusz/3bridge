@@ -9,7 +9,7 @@ from bridge.conditions import (
     pc_min,
     pc_range,
 )
-from bridge.hand import Suit
+from bridge.hand import Hand, Suit
 
 
 @pytest.mark.parametrize("number", range(1, 24, 2))
@@ -96,3 +96,32 @@ def test_description_of_max_suit_card_count(suit, text, count):
 def test_description_of_min_max_suit_card_count(suit, text, start, add):
     condition = cards_range(start, start + add, suit=suit)
     assert condition.describe() == f"od {start} do {start+add} {text}"
+
+
+@pytest.mark.parametrize("hand_text", ["AKQJ...", "A.A.Q.", "K.K.K.J", "Q.Q.Q.A"])
+def test_pc_10_condition_evaluates_true_only_for_hands_with_10_hpc(
+    hand_text,
+):
+    condition = pc(10)
+    hand = Hand.from_text(hand_text)
+    assert condition.evaluate(hand) is True
+
+
+@pytest.mark.parametrize(
+    "hand_text", ["...", "AKQ10...", "A.K.Q.", "Q.K.K.J", "J.J.J.A"]
+)
+def test_pc_10_condition_evaluates_false_for_hand_with_lower_hpc(hand_text):
+    condition = pc(10)
+    hand = Hand.from_text(hand_text)
+    assert condition.evaluate(hand) is False
+
+
+@pytest.mark.parametrize(
+    "hand_text", ["AKQJ..AKQJ.", "A.K.QJ.QJ", "AQ.AK.K.J", "QJ.J.AKJ.A"]
+)
+def test_pc_10_condition_evaluates_false_for_hand_with_higher_hpc(
+    hand_text,
+):
+    condition = pc(10)
+    hand = Hand.from_text(hand_text)
+    assert condition.evaluate(hand) is False

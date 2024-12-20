@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 
-from bridge.hand import Suit
+from bridge.hand import Hand, Suit
 
 
 def pc(count: int) -> Condition:
@@ -51,6 +51,9 @@ class Condition:
     value_min: int | None = None
     value_max: int | None = None
     suit: Suit | None = None
+
+    def evaluate(self, hand: Hand) -> bool:
+        return hand.hcl() == self.value_min
 
     def describe(self) -> str:
         if self.variable == Variable.PC:
