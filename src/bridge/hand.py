@@ -1,4 +1,4 @@
-"""Operations on Hands and Cards."""
+"""Basic types for bridge card game."""
 
 from __future__ import annotations
 
@@ -8,13 +8,15 @@ from enum import Enum
 
 
 class Suit(Enum):
+    """Suit of the bridge playing card."""
+
     CLUB = 0
     DIAMOND = 1
     HEART = 2
     SPADE = 3
 
     def __repr__(self):
-        return f'<{self.__class__.__name__}.{self._name_}>'
+        return f'{self.__class__.__name__}.{self._name_}'
 
     def __lt__(self, other):
         if self.__class__ == other.__class__:
@@ -26,14 +28,18 @@ class Suit(Enum):
         return ('C', 'D', 'H', 'S')
 
     def as_text(self) -> str:
+        """Return text representation of the Suit."""
         return Suit.__strings()[self.value]
 
     @classmethod
     def from_text(cls, text: str) -> Suit:
+        """Create a Suit from the text representation."""
         return cls(cls.__strings().index(text))
 
 
 class Rank(Enum):
+    """Rank of the bridge playing card."""
+
     TWO = 0
     THREE = 1
     FOUR = 2
@@ -48,6 +54,9 @@ class Rank(Enum):
     KING = 11
     ACE = 12
 
+    def __repr__(self):
+        return f'{self.__class__.__name__}.{self._name_}'
+
     @classmethod
     def __strings(cls):
         return ('2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A')
@@ -58,26 +67,36 @@ class Rank(Enum):
         raise NotImplementedError
 
     def as_text(self) -> str:
+        """Return text representation of the Rank."""
         return Rank.__strings()[self.value]
 
     @classmethod
     def from_text(cls, text: str) -> Rank:
+        """Create a Rank from text representation."""
         return cls(cls.__strings().index(text))
 
 
 @dataclass(eq=True, frozen=True)
 class Card:
+    """One bridge playing card."""
+
     suit: Suit
     rank: Rank
 
+    def __repr__(self):
+        return f'Card({self.suit}, {self.rank})'
+
     @classmethod
     def from_text(cls, text: str):
+        """Create a card from text representation."""
         return cls(Suit.from_text(text[0]), Rank.from_text(text[1:]))
 
     def as_text(self) -> str:
+        """Return text representation of the Card."""
         return self.suit.as_text() + self.rank.as_text()
 
     def hcl(self) -> int:
+        """Return high card point value of the Card."""
         hcls = {
             Rank.ACE: 4,
             Rank.KING: 3,
@@ -88,7 +107,7 @@ class Card:
 
 
 class Hand:
-    """Represent a set of cards for one player."""
+    """Hand of bridge cards."""
 
     _cards: set[Card]
 
@@ -102,6 +121,7 @@ class Hand:
         return iter(self._cards)
 
     def add(self, card: Card) -> None:
+        """Add a Card to Hand. Throws if Card is already in Hand."""
         if card in self._cards:
             msg = f'{card!r} already in hand'
             raise ValueError(msg)
@@ -111,6 +131,7 @@ class Hand:
         return sum(card.hcl() for card in self._cards)
 
     def as_text(self) -> str:
+        """Return text representation of the Hand."""
         suits = sorted(Suit, reverse=True)
         suit_ranks = {suit: [] for suit in suits}
         for card in self._cards:
@@ -123,7 +144,7 @@ class Hand:
 
     @classmethod
     def from_text(cls: type[Hand], text: str) -> Hand:
-        """Create a Hand from text representation."""
+        """Create a bridge Hand from text representation."""
         suits = [Suit.SPADE, Suit.HEART, Suit.DIAMOND, Suit.CLUB]
         rank_re = re.compile(r"[AKQJ98765432]|10")
         rank_texts = [rank_re.findall(cards) for cards in text.split('.')]

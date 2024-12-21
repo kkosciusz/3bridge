@@ -1,3 +1,5 @@
+"""Bidding rules for a bridge card game."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field

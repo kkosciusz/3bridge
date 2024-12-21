@@ -1,4 +1,4 @@
-"""Operations on Bids."""
+"""Bids and operations in a bridge card game."""
 
 from __future__ import annotations
 
@@ -7,6 +7,8 @@ from enum import Enum
 
 
 class Trump(Enum):
+    """Trump of a Bid in a bridge game."""
+
     CLUB = 0
     DIAMOND = 1
     HEART = 2
@@ -23,6 +25,8 @@ class Trump(Enum):
 
 @dataclass(eq=True, frozen=True)
 class Bid:
+    """Contract Bid in a bridge game."""
+
     trump: Trump
     count: int
 

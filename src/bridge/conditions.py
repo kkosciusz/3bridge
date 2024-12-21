@@ -1,3 +1,5 @@
+"""Binary conditions for selecting hands in bridge card game."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
