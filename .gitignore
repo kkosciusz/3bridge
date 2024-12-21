@@ -1,3 +1,4 @@
+.hypothesis/
 dist/
 .coverage
 __pycache__
