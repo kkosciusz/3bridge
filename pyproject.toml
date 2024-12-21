@@ -30,8 +30,13 @@ packages = [
     "src/bridge"
 ]
 
+[tool.hatch.envs.hatch-test]
+extra-dependencies = [
+    "hypothesis"
+]
+
 [tool.hatch.envs.test]
-dependencies = [
+extra-dependencies = [
     "hypothesis",
     "watchdog[watchmedo]",
     "coverage[toml]",
