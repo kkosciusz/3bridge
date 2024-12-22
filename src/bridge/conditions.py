@@ -8,20 +8,20 @@ from enum import Enum
 from bridge.cards import Hand, Suit
 
 
-def pc(count: int) -> Condition:
-    return Condition(Variable.PC, value_min=count, value_max=count)
+def points(count: int) -> Condition:
+    return Condition(Variable.POINTS, value_min=count, value_max=count)
 
 
-def pc_min(count: int) -> Condition:
-    return Condition(Variable.PC, value_min=count)
+def points_min(count: int) -> Condition:
+    return Condition(Variable.POINTS, value_min=count)
 
 
-def pc_max(count: int) -> Condition:
-    return Condition(Variable.PC, value_max=count)
+def points_max(count: int) -> Condition:
+    return Condition(Variable.POINTS, value_max=count)
 
 
-def pc_range(count_min: int, count_max: int) -> Condition:
-    return Condition(Variable.PC, value_min=count_min, value_max=count_max)
+def points_range(count_min: int, count_max: int) -> Condition:
+    return Condition(Variable.POINTS, value_min=count_min, value_max=count_max)
 
 
 def cards(count: int, suit: Suit) -> Condition:
@@ -43,7 +43,7 @@ def cards_range(count_min: int, count_max: int, suit: Suit) -> Condition:
 
 
 class Variable(Enum):
-    PC = 1
+    POINTS = 1
     CARDS = 2
 
 
@@ -55,7 +55,7 @@ class Condition:
     suit: Suit | None = None
 
     def evaluate(self, hand: Hand) -> bool:
-        if self.variable == Variable.PC:
+        if self.variable == Variable.POINTS:
             value = hand.points()
         elif self.variable == Variable.CARDS:
             value = sum(card.suit == self.suit for card in hand)
@@ -71,7 +71,7 @@ class Condition:
         return cond
 
     def describe(self) -> str:
-        if self.variable == Variable.PC:
+        if self.variable == Variable.POINTS:
             if self.value_max is not None and self.value_min is not None:
                 if self.value_min == self.value_max:
                     return f"{self.value_max} PC"
