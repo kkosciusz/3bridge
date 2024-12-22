@@ -27,3 +27,9 @@ class Rule:
         if exclude_text:
             result += f" wyklucza {exclude_text}"
         return result
+
+    def match(self, hand):
+        """Match the rule against a given hand."""
+        required_match = all(cond.evaluate(hand) for cond in self.require)
+        excluded_match = all(not cond.evaluate(hand) for cond in self.exclude)
+        return required_match and excluded_match

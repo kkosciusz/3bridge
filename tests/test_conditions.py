@@ -132,7 +132,7 @@ def test_one_suit_card_conditions_evaluate_correctly(hand, suit):
     verify_hand_condition(
         hand,
         cards(5, suit),
-        lambda hand: 5 == sum(card.suit == suit for card in hand),
+        lambda hand: sum(card.suit == suit for card in hand) == 5,
     )
     verify_hand_condition(
         hand,
