@@ -105,11 +105,10 @@ def test_description_of_min_max_suit_card_count(suit, text, start, add):
     assert condition.describe() == f"od {start} do {start+add} {text}"
 
 
-def verify_pc_condition(
-    hand: Hand, condition: Condition, expect: Callable[[int], bool]
+def verify_hand_condition(
+    hand: Hand, condition: Condition, expect: Callable[[Hand], bool]
 ) -> None:
-    points = hand.points()
-    expected = expect(points)
+    expected = expect(hand)
     assert condition.evaluate(hand) is expected
 
 
@@ -120,37 +119,32 @@ def n_card_hand(draw, n: int, cards: Sequence[Card] = ALL_CARDS) -> Hand:
 
 @given(hand=n_card_hand(13))
 def test_pc_conditions_evaluate_true_only_for_hands_with_correct_points(hand):
-    verify_pc_condition(hand, pc(10), lambda pc: pc == 10)
-    verify_pc_condition(hand, pc_max(10), lambda pc: pc <= 10)
-    verify_pc_condition(hand, pc_min(10), lambda pc: pc >= 10)
-    verify_pc_condition(hand, pc_range(8, 12), lambda pc: 8 <= pc <= 12)
-
-
-def verify_cards_condition(
-    hand: Hand, condition: Condition, expect: Callable[[Hand], bool]
-) -> None:
-    expected = expect(hand)
-    assert condition.evaluate(hand) is expected
+    verify_hand_condition(hand, pc(10), lambda hand: hand.points() == 10)
+    verify_hand_condition(hand, pc_max(10), lambda hand: hand.points() <= 10)
+    verify_hand_condition(hand, pc_min(10), lambda hand: hand.points() >= 10)
+    verify_hand_condition(
+        hand, pc_range(8, 12), lambda hand: 8 <= hand.points() <= 12
+    )
 
 
 @given(hand=n_card_hand(13), suit=st.sampled_from(Suit))
 def test_one_suit_card_conditions_evaluate_correctly(hand, suit):
-    verify_cards_condition(
+    verify_hand_condition(
         hand,
         cards(5, suit),
-        lambda hand: sum(card.suit == suit for card in hand) == 5,
+        lambda hand: 5 == sum(card.suit == suit for card in hand),
     )
-    verify_cards_condition(
+    verify_hand_condition(
         hand,
         cards_min(5, suit),
         lambda hand: sum(card.suit == suit for card in hand) >= 5,
     )
-    verify_cards_condition(
+    verify_hand_condition(
         hand,
         cards_max(5, suit),
         lambda hand: sum(card.suit == suit for card in hand) <= 5,
     )
-    verify_cards_condition(
+    verify_hand_condition(
         hand,
         cards_range(4, 6, suit),
         lambda hand: 4 <= sum(card.suit == suit for card in hand) <= 6,
