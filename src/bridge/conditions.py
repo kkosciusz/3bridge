@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 
-from bridge.hand import Hand, Suit
+from bridge.cards import Hand, Suit
 
 
 def pc(count: int) -> Condition:

@@ -15,7 +15,7 @@ from bridge.conditions import (
     pc_min,
     pc_range,
 )
-from bridge.hand import ALL_CARDS, Card, Hand, Suit
+from bridge.cards import ALL_CARDS, Card, Hand, Suit
 from hypothesis import given
 
 

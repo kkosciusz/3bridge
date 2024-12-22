@@ -1,7 +1,7 @@
 import pytest
 from bridge.bid import Bid, Trump
 from bridge.conditions import cards_min, pc, pc_min, pc_range
-from bridge.hand import Suit
+from bridge.cards import Suit
 from bridge.rules import Rule
 
 # CLUB = '♣'
