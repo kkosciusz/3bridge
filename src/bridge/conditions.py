@@ -95,4 +95,4 @@ class Condition:
                 return f"od {self.value_min} {suit_name}"
             if self.value_max is not None:
                 return f"do {self.value_max} {suit_name}"
-        return ""
+        raise NotImplementedError

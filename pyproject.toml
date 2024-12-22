@@ -46,7 +46,7 @@ extra-dependencies = [
 ]
 
 [tool.hatch.envs.test.scripts]
-test-coverage = "pytest --cov-config=pyproject.toml --cov=pkg --cov=tests"
+test-coverage = "pytest --cov-config=pyproject.toml --cov=bridge --cov=tests"
 test          = "test-coverage --no-cov"
 autotest      = "watchmedo shell-command --patterns=*.py -R -D -W -q --command=pytest"
 
@@ -64,3 +64,14 @@ line-length = 85
 
 [tool.ruff.format]
 quote-style = "preserve"
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+exclude_also = [
+    "def __repr__",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:"
+]
