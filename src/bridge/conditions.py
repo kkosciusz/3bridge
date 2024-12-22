@@ -56,7 +56,7 @@ class Condition:
 
     def evaluate(self, hand: Hand) -> bool:
         cond = True
-        points = hand.hcl()
+        points = hand.points()
         if self.value_max is not None:
             cond = cond and points <= self.value_max
         if self.value_min is not None:

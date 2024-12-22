@@ -108,7 +108,7 @@ def test_description_of_min_max_suit_card_count(suit, text, start, add):
 def verify_pc_condition(
     hand: Hand, condition: Condition, expect: Callable[[int], bool]
 ) -> None:
-    points = hand.hcl()
+    points = hand.points()
     expected = expect(points)
     assert condition.evaluate(hand) is expected
 

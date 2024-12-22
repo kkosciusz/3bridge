@@ -95,15 +95,15 @@ class Card:
         """Return text representation of the Card."""
         return self.suit.as_text() + self.rank.as_text()
 
-    def hcl(self) -> int:
-        """Return high card point value of the Card."""
-        hcls = {
+    def points(self) -> int:
+        """Calculate point value of the Card."""
+        points = {
             Rank.ACE: 4,
             Rank.KING: 3,
             Rank.QUEEN: 2,
             Rank.JACK: 1,
         }
-        return hcls.get(self.rank, 0)
+        return points.get(self.rank, 0)
 
 
 class Hand:
@@ -127,8 +127,9 @@ class Hand:
             raise ValueError(msg)
         self._cards.add(card)
 
-    def hcl(self) -> int:
-        return sum(card.hcl() for card in self._cards)
+    def points(self) -> int:
+        """Calculate point value of the cards in Hand."""
+        return sum(card.points() for card in self._cards)
 
     def as_text(self) -> str:
         """Return text representation of the Hand."""

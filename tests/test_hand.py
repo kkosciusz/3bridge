@@ -41,7 +41,7 @@ def test_given_a_card_can_compute_correct_hcp_value():
     jack = Card(Suit.CLUB, Rank.JACK)
     ten = Card(Suit.CLUB, Rank.TEN)
     cards = (ace, king, queen, jack, ten)
-    assert [card.hcl() for card in cards] == [4, 3, 2, 1, 0]
+    assert [card.points() for card in cards] == [4, 3, 2, 1, 0]
 
 
 def test_given_a_hand_can_compute_correct_hcp_value():
@@ -52,7 +52,7 @@ def test_given_a_hand_can_compute_correct_hcp_value():
     ten = Card(Suit.CLUB, Rank.TEN)
     cards = (ace, king, queen, jack, ten)
     hand = Hand(cards)
-    assert hand.hcl() == 10
+    assert hand.points() == 10
 
 
 @pytest.mark.parametrize(
