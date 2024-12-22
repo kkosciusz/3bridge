@@ -1,7 +1,7 @@
 import pytest
 from bridge.bid import Bid, Trump
-from bridge.conditions import cards_min, pc, pc_min, pc_range
 from bridge.cards import Suit
+from bridge.conditions import cards_min, pc, pc_min, pc_range
 from bridge.rules import Rule
 
 # CLUB = '♣'
@@ -67,5 +67,8 @@ def test_can_describe_complex_1nt_rule_with_requires_and_excludes_conditions():
     ]
     exclude = [cards_min(5, Suit.HEART), cards_min(5, Suit.SPADE)]
     rule = Rule(bid=bid, require=require, exclude=exclude)
-    expected = f"1{NOTRUMP}: 15-17 PC, od 2 trefli, od 2 kar, od 2 kierów, od 2 pików wyklucza od 5 kierów, od 5 pików"
+    expected = (
+        f"1{NOTRUMP}: 15-17 PC, od 2 trefli, od 2 kar, "
+        "od 2 kierów, od 2 pików wyklucza od 5 kierów, od 5 pików"
+    )
     assert rule.describe() == expected

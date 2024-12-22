@@ -56,12 +56,21 @@ class Condition:
 
     def evaluate(self, hand: Hand) -> bool:
         cond = True
-        points = hand.points()
-        if self.value_max is not None:
-            cond = cond and points <= self.value_max
-        if self.value_min is not None:
-            cond = cond and points >= self.value_min
-        return cond
+        if self.variable == Variable.PC:
+            points = hand.points()
+            if self.value_max is not None:
+                cond = cond and points <= self.value_max
+            if self.value_min is not None:
+                cond = cond and points >= self.value_min
+            return cond
+        if self.variable == Variable.CARDS:
+            cards = sum(card.suit == self.suit for card in hand)
+            if self.value_max is not None:
+                cond = cond and cards <= self.value_max
+            if self.value_min is not None:
+                cond = cond and cards >= self.value_min
+            return cond
+        raise NotImplementedError
 
     def describe(self) -> str:
         if self.variable == Variable.PC:

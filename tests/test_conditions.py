@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from typing import Callable, Iterable
+from typing import Callable, Sequence
 
 import hypothesis.strategies as st
 import pytest
+from bridge.cards import ALL_CARDS, Card, Hand, Suit
 from bridge.conditions import (
     Condition,
     cards,
@@ -15,7 +16,6 @@ from bridge.conditions import (
     pc_min,
     pc_range,
 )
-from bridge.cards import ALL_CARDS, Card, Hand, Suit
 from hypothesis import given
 
 
@@ -114,7 +114,7 @@ def verify_pc_condition(
 
 
 @st.composite
-def n_card_hand(draw, n: int, cards: Iterable[Card] = ALL_CARDS) -> Hand:
+def n_card_hand(draw, n: int, cards: Sequence[Card] = ALL_CARDS) -> Hand:
     return draw(st.permutations(cards).map(lambda x: list(x)[:n]).map(Hand))
 
 
@@ -124,3 +124,34 @@ def test_pc_conditions_evaluate_true_only_for_hands_with_correct_points(hand):
     verify_pc_condition(hand, pc_max(10), lambda pc: pc <= 10)
     verify_pc_condition(hand, pc_min(10), lambda pc: pc >= 10)
     verify_pc_condition(hand, pc_range(8, 12), lambda pc: 8 <= pc <= 12)
+
+
+def verify_cards_condition(
+    hand: Hand, condition: Condition, expect: Callable[[Hand], bool]
+) -> None:
+    expected = expect(hand)
+    assert condition.evaluate(hand) is expected
+
+
+@given(hand=n_card_hand(13), suit=st.sampled_from(Suit))
+def test_one_suit_card_conditions_evaluate_correctly(hand, suit):
+    verify_cards_condition(
+        hand,
+        cards(5, suit),
+        lambda hand: sum(card.suit == suit for card in hand) == 5,
+    )
+    verify_cards_condition(
+        hand,
+        cards_min(5, suit),
+        lambda hand: sum(card.suit == suit for card in hand) >= 5,
+    )
+    verify_cards_condition(
+        hand,
+        cards_max(5, suit),
+        lambda hand: sum(card.suit == suit for card in hand) <= 5,
+    )
+    verify_cards_condition(
+        hand,
+        cards_range(4, 6, suit),
+        lambda hand: 4 <= sum(card.suit == suit for card in hand) <= 6,
+    )
