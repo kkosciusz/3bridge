@@ -111,6 +111,9 @@ class Hand:
 
     _cards: set[Card]
 
+    def __repr__(self) -> str:
+        return f'Hand.from_text({self.as_text()!r})'
+
     def __init__(self, cards=None):
         self._cards = set(cards) if cards is not None else set()
 
