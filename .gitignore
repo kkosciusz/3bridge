@@ -1,4 +1,5 @@
 .hypothesis/
+.vscode/
 dist/
 .coverage
 __pycache__
