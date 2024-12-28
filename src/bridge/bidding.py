@@ -12,10 +12,10 @@ from bridge.conditions import (
 from bridge.rules import Rule
 
 open_1_clubs_natural = Rule(
-    Bid(Trump.CLUB, 1), require=[points_range(12, 17), cards_min(5, Suit.CLUB)]
+    Bid(1, Trump.CLUB), require=[points_range(12, 17), cards_min(5, Suit.CLUB)]
 )
 open_1_clubs_balanced = Rule(
-    Bid(Trump.CLUB, 1),
+    Bid(1, Trump.CLUB),
     require=[points_range(12, 17)],
     exclude=[
         cards_min(5, Suit.SPADE),
@@ -24,18 +24,18 @@ open_1_clubs_balanced = Rule(
         cards_min(5, Suit.CLUB),
     ],
 )
-open_1_clubs_strong = Rule(Bid(Trump.CLUB, 1), require=[points_range(18, 22)])
+open_1_clubs_strong = Rule(Bid(1, Trump.CLUB), require=[points_range(18, 22)])
 open_1_diamonds = Rule(
-    Bid(Trump.DIAMOND, 1), require=[points_range(12, 17), cards_min(5, Suit.DIAMOND)]
+    Bid(1, Trump.DIAMOND), require=[points_range(12, 17), cards_min(5, Suit.DIAMOND)]
 )
 open_1_hearts = Rule(
-    Bid(Trump.HEART, 1), require=[points_range(12, 17), cards_min(5, Suit.HEART)]
+    Bid(1, Trump.HEART), require=[points_range(12, 17), cards_min(5, Suit.HEART)]
 )
 open_1_spades = Rule(
-    Bid(Trump.SPADE, 1), require=[points_range(12, 17), cards_min(5, Suit.SPADE)]
+    Bid(1, Trump.SPADE), require=[points_range(12, 17), cards_min(5, Suit.SPADE)]
 )
 open_1_notrump = Rule(
-    Bid(Trump.NOTRUMP, 1),
+    Bid(1, Trump.NOTRUMP),
     require=[
         points_range(15, 17),
         cards_range(3, 4, Suit.HEART),

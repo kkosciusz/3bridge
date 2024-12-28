@@ -32,26 +32,26 @@ NOTRUMP = 'NT'
 )
 @pytest.mark.parametrize("count", [1, 3, 5])
 def test_can_describe_rule_without_conditions(trump, symbol, count):
-    rule = Rule(bid=Bid(trump, count))
+    rule = Rule(bid=Bid(count, trump))
     assert rule.describe() == f"{count}{symbol}"
 
 
 def test_can_describe_rule_with_one_required_pc_condition():
-    bid = Bid(Trump.CLUB, 1)
+    bid = Bid(1, Trump.CLUB)
     condition = points_min(10)
     rule = Rule(bid=bid, require=[condition])
     assert rule.describe() == f"1{CLUB}: {condition.describe()}"
 
 
 def test_can_describe_rule_with_one_excluded_pc_condition():
-    bid = Bid(Trump.CLUB, 1)
+    bid = Bid(1, Trump.CLUB)
     condition = points_min(10)
     rule = Rule(bid=bid, exclude=[condition])
     assert rule.describe() == f"1{CLUB}: wyklucza {condition.describe()}"
 
 
 def test_can_describe_rule_with_one_required_and_one_excluded_pc_condition():
-    bid = Bid(Trump.CLUB, 1)
+    bid = Bid(1, Trump.CLUB)
     require = points_min(10)
     exclude = points(20)
     rule = Rule(bid=bid, require=[require], exclude=[exclude])
@@ -62,7 +62,7 @@ def test_can_describe_rule_with_one_required_and_one_excluded_pc_condition():
 
 
 def test_can_describe_complex_1nt_rule_with_requires_and_excludes_conditions():
-    bid = Bid(Trump.NOTRUMP, 1)
+    bid = Bid(1, Trump.NOTRUMP)
     require = [
         points_range(15, 17),
         cards_min(2, Suit.CLUB),
@@ -80,7 +80,7 @@ def test_can_describe_complex_1nt_rule_with_requires_and_excludes_conditions():
 
 
 def test_rule_matches_only_if_all_required_conditions_match():
-    bid = Bid(Trump.HEART, 1)
+    bid = Bid(1, Trump.HEART)
     rule = Rule(bid, require=[points_range(12, 15), cards_min(5, Suit.HEART)])
     hand_5h_15pc = Hand.from_text('987.AKQJ9.654.AJ')
     assert rule.match(hand_5h_15pc) is True
@@ -93,7 +93,7 @@ def test_rule_matches_only_if_all_required_conditions_match():
 
 
 def test_rule_matches_only_if_no_excluded_condition_matches():
-    bid = Bid(Trump.HEART, 1)
+    bid = Bid(1, Trump.HEART)
     rule = Rule(bid, exclude=[points_min(15), cards_min(4, Suit.CLUB)])
     hand_5c_12pc = Hand.from_text('Q87.98.654.AKQJ9')
     assert rule.match(hand_5c_12pc) is False

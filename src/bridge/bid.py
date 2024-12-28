@@ -27,8 +27,8 @@ class Trump(Enum):
 class Bid:
     """Contract Bid in a bridge game."""
 
-    trump: Trump
     count: int
+    trump: Trump
 
     def as_text(self) -> str:
         return f"{self.count}{self.trump.as_text()}"
