@@ -15,6 +15,7 @@ class Rule:
     bid: Bid
     require: list[Condition] = field(default_factory=list)
     exclude: list[Condition] = field(default_factory=list)
+    note: str | None = None
 
     def describe(self):
         result = self.bid.as_text()
@@ -33,3 +34,9 @@ class Rule:
         required_match = all(cond.evaluate(hand) for cond in self.require)
         excluded_match = all(not cond.evaluate(hand) for cond in self.exclude)
         return required_match and excluded_match
+
+    def as_text(self) -> str:
+        bid = self.bid.as_text()
+        if self.note:
+            bid += f" ({self.note})"
+        return bid

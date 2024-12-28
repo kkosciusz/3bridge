@@ -12,7 +12,9 @@ from bridge.conditions import (
 from bridge.rules import Rule
 
 open_1_clubs_natural = Rule(
-    Bid(1, Trump.CLUB), require=[points_range(12, 17), cards_min(5, Suit.CLUB)]
+    Bid(1, Trump.CLUB),
+    require=[points_range(12, 17), cards_min(5, Suit.CLUB)],
+    note="natural",
 )
 open_1_clubs_balanced = Rule(
     Bid(1, Trump.CLUB),
@@ -23,8 +25,11 @@ open_1_clubs_balanced = Rule(
         cards_min(5, Suit.DIAMOND),
         cards_min(5, Suit.CLUB),
     ],
+    note="balanced",
 )
-open_1_clubs_strong = Rule(Bid(1, Trump.CLUB), require=[points_range(18, 22)])
+open_1_clubs_strong = Rule(
+    Bid(1, Trump.CLUB), require=[points_range(18, 22)], note="strong"
+)
 open_1_diamonds = Rule(
     Bid(1, Trump.DIAMOND), require=[points_range(12, 17), cards_min(5, Suit.DIAMOND)]
 )
@@ -44,3 +49,12 @@ open_1_notrump = Rule(
         cards_range(3, 5, Suit.DIAMOND),
     ],
 )
+all_openings = [
+    open_1_clubs_balanced,
+    open_1_clubs_natural,
+    open_1_clubs_strong,
+    open_1_diamonds,
+    open_1_hearts,
+    open_1_spades,
+    open_1_notrump,
+]
