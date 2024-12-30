@@ -57,6 +57,39 @@ open_2_diamonds = Rule(
     require=[cards(6, Suit.DIAMOND), points_range(7, 11)],
     exclude=[cards_min(4, Suit.HEART), cards_min(4, Suit.SPADE)],
 )
+open_2_hearts = Rule(
+    Bid(2, Trump.HEART),
+    require=[cards(6, Suit.HEART), points_range(7, 11)],
+    exclude=[cards_min(4, Suit.SPADE)],
+)
+open_2_spades = Rule(
+    Bid(2, Trump.SPADE),
+    require=[cards(6, Suit.SPADE), points_range(7, 11)],
+    exclude=[cards_min(4, Suit.HEART)],
+)
+open_2_notrump = Rule(
+    Bid(2, Trump.NOTRUMP),
+    require=[
+        points_range(23, 24),
+        cards_range(2, 4, Suit.SPADE),
+        cards_range(2, 4, Suit.HEART),
+        cards_range(2, 4, Suit.DIAMOND),
+        cards_range(2, 4, Suit.CLUB),
+    ],
+)
+open_3_clubs = Rule(
+    Bid(3, Trump.CLUB), require=[points_range(6, 10), cards_min(7, Suit.CLUB)]
+)
+open_3_diamonds = Rule(
+    Bid(3, Trump.DIAMOND), require=[points_range(6, 10), cards_min(7, Suit.DIAMOND)]
+)
+open_3_hearts = Rule(
+    Bid(3, Trump.HEART), require=[points_range(6, 10), cards_min(7, Suit.HEART)]
+)
+open_3_spades = Rule(
+    Bid(3, Trump.SPADE), require=[points_range(6, 10), cards_min(7, Suit.SPADE)]
+)
+
 all_openings = [
     open_1_clubs_balanced,
     open_1_clubs_natural,
@@ -67,4 +100,11 @@ all_openings = [
     open_1_notrump,
     open_2_clubs,
     open_2_diamonds,
+    open_2_hearts,
+    open_2_spades,
+    open_2_notrump,
+    open_3_clubs,
+    open_3_diamonds,
+    open_3_hearts,
+    open_3_spades,
 ]
