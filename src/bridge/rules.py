@@ -36,7 +36,7 @@ class Rule:
         return required_match and excluded_match
 
     def as_text(self) -> str:
-        bid = self.bid.as_text()
+        text = self.bid.as_text()
         if self.note:
-            bid += f" ({self.note})"
-        return bid
+            text += f" ({self.note})"
+        return text

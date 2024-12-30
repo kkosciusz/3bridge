@@ -7,6 +7,8 @@ from bridge.bidding import (
     open_1_hearts,
     open_1_notrump,
     open_1_spades,
+    open_2_clubs,
+    open_2_diamonds,
 )
 from bridge.cards import Hand
 
@@ -49,6 +51,15 @@ from bridge.cards import Hand
         (open_1_notrump, 'KQ87.KQ87.Q9.KJ76', False),  # not enough diamonds
         (open_1_notrump, 'KQ87.Q9.KQ87.KJ76', False),  # not enough hearts
         (open_1_notrump, 'Q9.KQ87.KQ87.KJ76', False),  # not enough spades
+        (open_2_clubs, 'AKQ.AKQ.AKQ.AQK3', True),
+        (open_2_clubs, 'AJ10.AJ10.AJ10.AQ109', False),  # not enough points
+        (open_2_diamonds, '987.753.AK9876.9', True),
+        (open_2_diamonds, 'J87.Q53.AK9876.J', True),
+        (open_2_diamonds, '987.753.AK987.96', False),  # not enough diamonds
+        (open_2_diamonds, '987.753.AQ9876.9', False),  # not enough points
+        (open_2_diamonds, '987.Q53.AKQJ76.9', False),  # too many points
+        (open_2_diamonds, 'J8.Q536.AK9876.J', False),  # too many hearts
+        (open_2_diamonds, 'Q536.J8.AK9876.J', False),  # too many spades
     ],
 )
 def test_opening_1_examples_should_match_hand_as_expected(rule, hand_text, expected):
